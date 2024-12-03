@@ -1,3 +1,3 @@
-public with sharing class OrderSelector {
+public with sharing class CaseSelector {
     
  }
