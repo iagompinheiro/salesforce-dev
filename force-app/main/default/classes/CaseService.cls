@@ -34,4 +34,31 @@ public with sharing class CaseService {
             Messaging.sendEmail(emailToSend);
         }
     }
+
+    public static void sendEmailCaseClosed(List<Case> cases) { 
+        List<Case> caseClosed = new List<Case>(); 
+        List<Messaging.SingleEmailMessage> emailToSend = new List<Messaging.SingleEmailMessage>();
+
+        for (Case currentCase : cases) {
+            if (currentCase.Status == 'Closed') {
+                caseClosed.add(currentCase);
+
+                String subject = 'Seu caso foi fechado!';
+                String body = '<html>' +
+                              '<body>' +
+                              '<p>Estamos entrando em contato para informar que seu caso <strong>' + currentCase.CaseNumber + '</strong> foi encerrado. Esperamos que sua solicitação tenha sido resolvida com sucesso.</p>' + +
+                              '<p>Atenciosamente,<br/>Equipe de Suporte</p>' +
+                              '</body>' +
+                              '</html>';
+
+                emailToSend.add( 
+                    EmailUtils.createEmailMessage(subject, body, currentCase.ContactEmail)
+                );
+            }
+        }
+
+        if (!emailToSend.isEmpty()) {
+            Messaging.sendEmail(emailToSend);
+        }
+    }
 }
